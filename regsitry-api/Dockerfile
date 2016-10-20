@@ -16,7 +16,7 @@ ADD src /code/src
 
 # Exposing before package because of UTCs
 EXPOSE 4567
-RUN ["mvn", "package"]
+RUN ["mvn", "package", "-Dmaven.test.skip=true"]
 
 #EXPOSE 4567
 CMD ["mvn", "exec:java"]

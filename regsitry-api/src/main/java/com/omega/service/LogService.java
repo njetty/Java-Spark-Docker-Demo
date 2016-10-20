@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class LogService {
 
-    MongoClient client = new MongoClient("localhost",27017);
+    MongoClient client = new MongoClient("52.42.119.121",27017);
     Datastore datastore = new Morphia().createDatastore(client,"omega");
 
     public String addData(Log log){
