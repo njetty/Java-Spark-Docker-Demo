@@ -3,44 +3,14 @@ jdk:
   - oraclejdk8
 sudo: true
 install: true
-services: mongodb
-before_script:
-  - sleep 15
-script:
+services: 
+  - docker
+before_install:
   - cd regsitry-api
-  - ./build.sh
-before_deploy:
-  - cd ..
-  - zip -r regsitry-api.zip regsitry-api appspec.yml || true
-  - mkdir -p "dpl_cd_upload"
-  - mv regsitry-api.zip dpl_cd_upload/regsitry-api.zip || true
-deploy:
-  - provider: s3
-    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
-    secret_access_key: $AWS_SECRET_KEY
-    local_dir: dpl_cd_upload
-    bucket: sga-team-omega
-    region: us-west-2
-    skip_cleanup: true
-    acl: public_read
-    detect_encoding: true
-    on:
-      repo: airavata-courses/TeamOmega
-      all_branches: true
-  - provider: codedeploy
-    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
-    secret_access_key: $AWS_SECRET_KEY
-    bucket: sga-team-omega
-    key: regsitry-api.zip
-    bundle_type: zip
-    application: SGA_TeamOmega
-    deployment_group: SGA_RegistryDeploy
-    region: us-west-2
-    on:
-      repo: airavata-courses/TeamOmega
-      all_branches: true
-after_deploy:
-  - echo "Performing after deploy procedures..."
+  - docker build -t njetty/registry .
+  - docker run -d -p 4567:4567 njetty/registry
+script:
+  - curl -H "Content-Type: application/json" -X POST -d '{"username":"njetty","timestamp":"xyz","description":"test"}' http://localhost:4567/add-log
 notifications:
   slack:
     secure: cE1uKN6FAfMdBAiRWHMOHVLo/DQqosbxNkYI2CAHMR34FVnrFBjYB49qfh8BuF+S4XmiuEBACJCqQvdSFwc4S6wp+jWsPhKmB5W+VsC+QDdCAiegRW3/h45ZMoupefOHNDF6iGmGu5Ck7xDNiJDxCdNaVqxYTsuaWlKC9ur4mutM5FNJGxXaH00qVHFl91jSq84EXSy4wfxRj/uc1PBRHzgpF9RE58O+5dZkhWYqFfrxGpiy3U6DqA49jKzJeRnVlqTagTJCMQqEMAx0AXieuJTPK69ZsTQ0aM3ouy/rZ0Vblw2GpB7FSBiYk7hybVhu568cM/+ZzCsKC9ZUtUaA0g+N8huvFigKvObrvwU7p/YpBcBFdxzVfiyRSPccPQ7myV4ibImxPF1JI0OMqvbzN85Mcp9rnpDcSxVEFFXPW+PUhCVtfbWhmEq8xCNCoMx95lzdxxhIRmVxNtJcpL7gaGliyiZm8YZIutevVCd9WdpH+fddToRV5XAhYO2HzTeGB0JImZczTf20rwbrKaqUXpMG2EGMk3mEJPBtfA7iU4WG5x1CiTQ00gW/0T6U9AxXwiFzu/X7+s2y7H9Xp3VcTfrTJXkJXLkYX0tAk12X1ksHp4weiRUhL955jz2fTUpFzlcS+AcOge7sXIMxgqq1NBm2omt1JavuerZok8zADfk=
