@@ -7,7 +7,7 @@ services:
   - docker
 before_install:
   - cd regsitry-api
-  - docker build --no-cache njetty/registry .
+  - docker build -t njetty/registry .
 script:
   - docker run -d -p 4567:4567 njetty/registry
 after_success:
