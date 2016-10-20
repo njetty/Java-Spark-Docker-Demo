@@ -13,7 +13,10 @@ RUN ["mvn", "verify"]
 
 # Adding source, compile and package into a fat jar
 ADD src /code/src
+
+# Exposing before package because of UTCs
+EXPOSE 4567
 RUN ["mvn", "package"]
 
-EXPOSE 4567
+#EXPOSE 4567
 CMD ["mvn", "exec:java"]
