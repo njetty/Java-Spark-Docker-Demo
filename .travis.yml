@@ -10,6 +10,11 @@ before_install:
   - docker build -t njetty/registry .
 script:
   - docker run -d -p 4567:4567 njetty/registry
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push njetty/registry;
+    fi
 notifications:
   slack:
     secure: cE1uKN6FAfMdBAiRWHMOHVLo/DQqosbxNkYI2CAHMR34FVnrFBjYB49qfh8BuF+S4XmiuEBACJCqQvdSFwc4S6wp+jWsPhKmB5W+VsC+QDdCAiegRW3/h45ZMoupefOHNDF6iGmGu5Ck7xDNiJDxCdNaVqxYTsuaWlKC9ur4mutM5FNJGxXaH00qVHFl91jSq84EXSy4wfxRj/uc1PBRHzgpF9RE58O+5dZkhWYqFfrxGpiy3U6DqA49jKzJeRnVlqTagTJCMQqEMAx0AXieuJTPK69ZsTQ0aM3ouy/rZ0Vblw2GpB7FSBiYk7hybVhu568cM/+ZzCsKC9ZUtUaA0g+N8huvFigKvObrvwU7p/YpBcBFdxzVfiyRSPccPQ7myV4ibImxPF1JI0OMqvbzN85Mcp9rnpDcSxVEFFXPW+PUhCVtfbWhmEq8xCNCoMx95lzdxxhIRmVxNtJcpL7gaGliyiZm8YZIutevVCd9WdpH+fddToRV5XAhYO2HzTeGB0JImZczTf20rwbrKaqUXpMG2EGMk3mEJPBtfA7iU4WG5x1CiTQ00gW/0T6U9AxXwiFzu/X7+s2y7H9Xp3VcTfrTJXkJXLkYX0tAk12X1ksHp4weiRUhL955jz2fTUpFzlcS+AcOge7sXIMxgqq1NBm2omt1JavuerZok8zADfk=
