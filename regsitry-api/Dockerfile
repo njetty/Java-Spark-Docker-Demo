@@ -1,10 +1,9 @@
-FROM java:8
+FROM maven:3.3.9-jdk-8
 
-# Install maven
-RUN apt-get clean
+# Update the cache
 RUN apt-get update
-RUN apt-get install -y maven
 
+# Set Work Directory
 WORKDIR /code
 
 # Prepare by downloading dependencies
