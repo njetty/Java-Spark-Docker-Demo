@@ -3,15 +3,22 @@ jdk:
   - oraclejdk8
 sudo: true
 install: true
-services: mongodb
-before_script:
-  - sleep 15
-script:
+services: 
+  - docker
+before_install:
   - cd regsitry-api
-  - ./build.sh
+  - mvn test
+  - docker build -t njetty/registry .
+script:
+  - docker run -d -p 4567:4567 njetty/registry
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push njetty/registry;
+    fi
 before_deploy:
   - cd ..
-  - zip -r regsitry-api.zip regsitry-api appspec.yml || true
+  - zip -r regsitry-api.zip script appspec.yml || true
   - mkdir -p "dpl_cd_upload"
   - mv regsitry-api.zip dpl_cd_upload/regsitry-api.zip || true
 deploy:
@@ -25,7 +32,7 @@ deploy:
     acl: public_read
     detect_encoding: true
     on:
-      repo: airavata-courses/TeamOmega
+      repo: njetty/Java-Spark-Docker-Demo
       all_branches: true
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
@@ -37,7 +44,7 @@ deploy:
     deployment_group: SGA_RegistryDeploy
     region: us-west-2
     on:
-      repo: airavata-courses/TeamOmega
+      repo: njetty/Java-Spark-Docker-Demo
       all_branches: true
 after_deploy:
   - echo "Performing after deploy procedures..."
