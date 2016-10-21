@@ -6,15 +6,14 @@ if command_exists docker; then
                 MAJOR_W=1
                 MINOR_W=10
 
-                cat >&2 <<-'EOF'
-                        Info: "docker" command already exists on this system.
-
-                EOF
+                cat <<-'EOF'
+			Info: "docker" command already exists on this system.
+		 EOF
 else
-                cat >&2 <<-'EOF'
-                        Warning: the "docker" command is not installed
-                        Info: Starting the installation of Docker
-                EOF
+                cat <<-'EOF'
+			Warning: the "docker" command is not installed
+			Info: Starting the installation of Docker
+		EOF
                 sudo yum update -y
                 sudo yum install -y docker
                 sudo service docker start
