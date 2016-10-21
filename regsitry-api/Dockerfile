@@ -1,7 +1,7 @@
 FROM maven:3.3.9-jdk-8-alpine
 
 # Update the cache
-RUN apt-get update
+#RUN apt-get update
 
 # Set Work Directory
 WORKDIR /code
