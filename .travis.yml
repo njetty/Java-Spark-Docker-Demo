@@ -32,7 +32,7 @@ deploy:
     acl: public_read
     detect_encoding: true
     on:
-      repo: airavata-courses/TeamOmega
+      repo: njetty/Java-Spark-Docker-Demo
       all_branches: true
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
@@ -44,7 +44,7 @@ deploy:
     deployment_group: SGA_RegistryDeploy
     region: us-west-2
     on:
-      repo: airavata-courses/TeamOmega
+      repo: njetty/Java-Spark-Docker-Demo
       all_branches: true
 after_deploy:
   - echo "Performing after deploy procedures..."
