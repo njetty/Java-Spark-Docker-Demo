@@ -5,15 +5,10 @@ if command_exists docker; then
                 version="$(docker -v | awk -F '[ ,]+' '{ print $3 }')"
                 MAJOR_W=1
                 MINOR_W=10
+		echo 'Docker is already installed'
 
-                cat <<-'EOF'
-			Info: "docker" command already exists on this system.
-		 EOF
 else
-                cat <<-'EOF'
-			Warning: the "docker" command is not installed
-			Info: Starting the installation of Docker
-		EOF
+		echo 'Installing Docker'
                 sudo yum update -y
                 sudo yum install -y docker
                 sudo service docker start
