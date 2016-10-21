@@ -8,13 +8,13 @@ services:
 before_install:
   - cd regsitry-api
   - mvn test
-  - docker build -t njetty/registry .
+  - docker build -t njetty/registry:latest .
 script:
   - docker run -d -p 4567:4567 njetty/registry
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push njetty/registry;
+    docker push njetty/registry:latest;
     fi
 before_deploy:
   - cd ..
