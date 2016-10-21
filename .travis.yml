@@ -18,7 +18,7 @@ after_success:
     fi
 before_deploy:
   - cd ..
-  - zip -r regsitry-api.zip regsitry-api/src/resources/script appspec.yml || true
+  - zip -r regsitry-api.zip script appspec.yml || true
   - mkdir -p "dpl_cd_upload"
   - mv regsitry-api.zip dpl_cd_upload/regsitry-api.zip || true
 deploy:
