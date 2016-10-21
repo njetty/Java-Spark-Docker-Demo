@@ -13,7 +13,7 @@ script:
   - docker run -d -p 4567:4567 njetty/registry
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker push njetty/registry:latest;
     fi
 before_deploy:
